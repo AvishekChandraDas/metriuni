@@ -1,0 +1,32 @@
+{
+  "version": 2,
+  "name": "metriuni-production",
+  "builds": [
+    {
+      "src": "backend/vercel-server.js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    {
+      "src": "/api/(.*)",
+      "dest": "backend/vercel-server.js"
+    },
+    {
+      "src": "/health",
+      "dest": "backend/vercel-server.js"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "backend/vercel-server.js"
+    }
+  ],
+  "env": {
+    "NODE_ENV": "production"
+  },
+  "functions": {
+    "backend/vercel-server.js": {
+      "maxDuration": 30
+    }
+  }
+}

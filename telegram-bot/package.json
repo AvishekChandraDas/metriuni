@@ -1,0 +1,21 @@
+{
+  "name": "metrouni-telegram-bot",
+  "version": "1.0.0",
+  "description": "MetroUni Telegram Bot for University Updates",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js",
+    "dev": "nodemon bot.js"
+  },
+  "keywords": ["telegram", "bot", "university", "metrouni"],
+  "author": "MetroUni Team",
+  "license": "MIT",
+  "dependencies": {
+    "node-telegram-bot-api": "^0.61.0",
+    "axios": "^1.6.2",
+    "dotenv": "^16.3.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.2"
+  }
+}

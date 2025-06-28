@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feed Search Demo - MetroUni</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+      .search-demo {
+        animation: pulse 2s infinite;
+      }
+    </style>
+  </head>
+  <body class="bg-gray-100">
+    <div class="max-w-4xl mx-auto p-6">
+      <h1 class="text-3xl font-bold text-gray-800 mb-8 text-center">
+        🔍 MetroUni Feed Search Demo
+      </h1>
+
+      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-xl font-semibold mb-4">
+          ✅ Successfully Implemented Features
+        </h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="font-medium text-gray-800 mb-3">
+              🔍 Search Functionality
+            </h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li>✓ Real-time search with 300ms debounce</li>
+              <li>✓ Search across post content, author, department, batch</li>
+              <li>✓ Backend API endpoint with query parameter support</li>
+              <li>✓ Frontend search bar with clear functionality</li>
+              <li>✓ Search results counter and status messages</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-medium text-gray-800 mb-3">🎯 Search Features</h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li>✓ Empty search returns all posts</li>
+              <li>✓ Pagination disabled during search</li>
+              <li>✓ Loading states for search operations</li>
+              <li>✓ Clear search button functionality</li>
+              <li>✓ No results state with helpful message</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-xl font-semibold mb-4">🔧 Technical Implementation</h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="font-medium text-gray-800 mb-3">Backend Changes</h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li>
+                ✓ Updated
+                <code class="bg-gray-100 px-1 rounded">POST /api/posts</code>
+                endpoint
+              </li>
+              <li>
+                ✓ Added search parameter
+                <code class="bg-gray-100 px-1 rounded">?q=searchTerm</code>
+              </li>
+              <li>✓ Enhanced Post model with search method</li>
+              <li>✓ Multi-field search (content, author, dept, batch)</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-medium text-gray-800 mb-3">Frontend Changes</h3>
+            <ul class="space-y-2 text-sm text-gray-600">
+              <li>
+                ✓ Updated
+                <code class="bg-gray-100 px-1 rounded">FeedPage.tsx</code>
+                component
+              </li>
+              <li>✓ Added search bar UI with icons</li>
+              <li>✓ Implemented debounced search</li>
+              <li>✓ Updated API service for search support</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6 mb-8">
+        <h2 class="text-xl font-semibold mb-4">🎮 How to Test</h2>
+
+        <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4">
+          <h3 class="font-medium text-blue-800 mb-2">🚀 Quick Start</h3>
+          <ol class="list-decimal list-inside space-y-1 text-sm text-blue-700">
+            <li>
+              Start backend:
+              <code class="bg-blue-100 px-1 rounded"
+                >cd backend && npm start</code
+              >
+            </li>
+            <li>
+              Start frontend:
+              <code class="bg-blue-100 px-1 rounded"
+                >cd frontend && npm run dev</code
+              >
+            </li>
+            <li>
+              Open
+              <a href="http://localhost:5173" class="underline"
+                >http://localhost:5173</a
+              >
+            </li>
+            <li>Navigate to Feed page</li>
+            <li>Use the search bar to test functionality</li>
+          </ol>
+        </div>
+
+        <div class="grid md:grid-cols-2 gap-4">
+          <div>
+            <h3 class="font-medium text-gray-800 mb-3">🔍 Search Test Cases</h3>
+            <ul class="space-y-1 text-sm text-gray-600">
+              <li>• Search by content keywords</li>
+              <li>• Search by author names</li>
+              <li>• Search by department (CSE, EEE)</li>
+              <li>• Search by batch year (2024, 2023)</li>
+              <li>• Test empty search</li>
+              <li>• Test special characters</li>
+            </ul>
+          </div>
+
+          <div>
+            <h3 class="font-medium text-gray-800 mb-3">✨ Expected Behavior</h3>
+            <ul class="space-y-1 text-sm text-gray-600">
+              <li>• Real-time results as you type</li>
+              <li>• 300ms delay before search</li>
+              <li>• Clear button appears when typing</li>
+              <li>• Results counter shows matches</li>
+              <li>• No pagination during search</li>
+              <li>• Graceful empty state</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg shadow-md p-6">
+        <h2 class="text-xl font-semibold mb-4">📝 Code Examples</h2>
+
+        <div class="space-y-4">
+          <div>
+            <h3 class="font-medium text-gray-800 mb-2">Backend API Usage</h3>
+            <pre
+              class="bg-gray-100 p-3 rounded text-sm overflow-x-auto"
+            ><code>GET /api/posts?q=searchTerm&page=1&limit=20
+
+// Response
+{
+  "posts": [...],
+  "pagination": { "hasMore": true },
+  "searchQuery": "searchTerm"
+}</code></pre>
+          </div>
+
+          <div>
+            <h3 class="font-medium text-gray-800 mb-2">Frontend Search Bar</h3>
+            <pre
+              class="bg-gray-100 p-3 rounded text-sm overflow-x-auto"
+            ><code>&lt;input
+  type="text"
+  value={searchQuery}
+  onChange={(e) => setSearchQuery(e.target.value)}
+  placeholder="Search posts by content, author, department, or batch..."
+/&gt;</code></pre>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-8 text-gray-600">
+        <p>🎉 Feed search functionality has been successfully implemented!</p>
+        <p class="text-sm mt-2">
+          Check the actual application at
+          <a href="http://localhost:5173" class="text-blue-600 underline"
+            >localhost:5173</a
+          >
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
