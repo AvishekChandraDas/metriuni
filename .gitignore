@@ -102,3 +102,39 @@ uploads/*
 # Temporary files
 tmp/
 temp/
+
+# Security - API Keys and Secrets
+*.pem
+*.key
+*.p12
+*.keystore
+config/secrets.js
+config/secrets.json
+.env.production
+
+# AWS SDK Examples (these can contain tokens)
+aws-sdk/examples/
+*/aws-sdk/examples/
+node_modules/aws-sdk/examples/
+
+# Any files containing tokens or keys
+*token*
+*secret*
+*api-key*
+*private-key*
+credentials.json
+auth.json
+
+# Backup files
+*.bak
+*.backup
+*.tmp
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Package locks
+package-lock.json
+yarn.lock
