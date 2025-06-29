@@ -1,0 +1,28 @@
+{
+  "name": "metriuni-platform",
+  "version": "1.0.0",
+  "description": "MetroUni Social Learning Platform",
+  "main": "backend/server.js",
+  "scripts": {
+    "start": "cd backend && npm start",
+    "dev": "cd backend && npm run dev",
+    "install-backend": "cd backend && npm install",
+    "install-frontend": "cd frontend && npm install",
+    "build": "npm run install-backend",
+    "postinstall": "npm run build"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=8.0.0"
+  },
+  "keywords": [
+    "social-network",
+    "university",
+    "education",
+    "platform"
+  ],
+  "author": "Avishek Chandra Das",
+  "license": "MIT",
+  "dependencies": {},
+  "devDependencies": {}
+}
