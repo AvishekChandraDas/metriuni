@@ -373,4 +373,34 @@ router.post('/debug-login', async (req, res) => {
   }
 });
 
+// Check user data endpoint
+router.get('/check-user/:email', async (req, res) => {
+  try {
+    const { email } = req.params;
+    const user = await User.findByEmail(email);
+    
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        hasPasswordHash: !!user.password_hash,
+        passwordHashLength: user.password_hash ? user.password_hash.length : 0,
+        role: user.role,
+        status: user.status,
+        muStudentId: user.mu_student_id,
+        department: user.department,
+        batch: user.batch
+      }
+    });
+  } catch (error) {
+    console.error('Check user error:', error);
+    res.status(500).json({ error: 'Failed to check user', details: error.message });
+  }
+});
+
 module.exports = router;
