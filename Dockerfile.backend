@@ -1,24 +1,14 @@
-# Use Node.js 20 standard image for better Vite/Rollup compatibility
-FROM node:20
+# Use Node.js 20 LTS Alpine for smaller image size
+FROM node:20-alpine
 
 # Install curl for health checks
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
+RUN apk add --no-cache curl
 
 # Set working directory
 WORKDIR /app
 
 # Copy root package.json for engine requirements
 COPY package*.json ./
-
-# Copy and build frontend first
-COPY frontend/package*.json ./frontend/
-WORKDIR /app/frontend
-RUN npm install
-WORKDIR /app
-COPY frontend/ ./frontend/
-WORKDIR /app/frontend
-RUN npm run build
-WORKDIR /app
 
 # Copy backend package.json and install dependencies
 COPY backend/package*.json ./backend/
@@ -32,8 +22,38 @@ COPY backend/ ./backend/
 # Create uploads directory
 RUN mkdir -p ./backend/uploads
 
-# Move frontend build to backend public directory
-RUN mkdir -p ./backend/public && cp -r ./frontend/dist/* ./backend/public/
+# Create a simple index.html for the root route
+RUN mkdir -p ./backend/public && echo '<!DOCTYPE html>
+<html>
+<head>
+    <title>MetroUni API Server</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; }
+        .container { max-width: 800px; margin: 0 auto; text-align: center; }
+        .api-link { display: inline-block; margin: 10px; padding: 15px 30px; background: rgba(255,255,255,0.2); 
+                   border-radius: 8px; text-decoration: none; color: white; border: 1px solid rgba(255,255,255,0.3); }
+        .api-link:hover { background: rgba(255,255,255,0.3); }
+        h1 { font-size: 3em; margin-bottom: 20px; }
+        .status { background: #4CAF50; padding: 10px; border-radius: 5px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎓 MetroUni Platform</h1>
+        <div class="status">✅ API Server Running Successfully</div>
+        <p>Your MetroUni social learning platform backend is live and ready!</p>
+        <div>
+            <a href="/api/health" class="api-link">🔍 Health Check</a>
+            <a href="/api/auth" class="api-link">🔐 Authentication</a>
+            <a href="/api/users" class="api-link">👥 Users API</a>
+            <a href="/api/posts" class="api-link">📝 Posts API</a>
+        </div>
+        <p style="margin-top: 40px; opacity: 0.8;">
+            Frontend coming soon! API is fully functional for mobile apps and external integrations.
+        </p>
+    </div>
+</body>
+</html>' > ./backend/public/index.html
 
 # Set environment variables
 ENV NODE_ENV=production
