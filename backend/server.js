@@ -76,24 +76,30 @@ app.use('/api/files', filesRoutes);
 // Health check routes
 app.use('/', healthRoutes);
 
-// Health check endpoints
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
+// Simple health check that always works (doesn't depend on database)
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: 'OK',
+    service: 'MetroUni API',
     timestamp: new Date().toISOString(),
+    version: '1.0.0',
     environment: process.env.NODE_ENV || 'development',
-    uptime: process.uptime()
+    port: PORT,
+    uptime: Math.floor(process.uptime())
   });
 });
 
-app.get('/api/health', (req, res) => {
+// Database-aware health check
+app.get('/api/health/full', (req, res) => {
   const healthStatus = {
     status: 'OK', 
     service: 'MetroUni API',
     timestamp: new Date().toISOString(),
     version: '1.0.0',
     environment: process.env.NODE_ENV || 'development',
-    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected',
+    port: PORT,
+    uptime: Math.floor(process.uptime())
   };
   
   res.json(healthStatus);
