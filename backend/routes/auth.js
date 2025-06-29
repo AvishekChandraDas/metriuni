@@ -403,4 +403,45 @@ router.get('/check-user/:email', async (req, res) => {
   }
 });
 
+// Fix user password endpoint
+router.post('/fix-password', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
+    // Find the user
+    const user = await User.findByEmail(email);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Hash the password
+    const passwordHash = await bcrypt.hash(password, 12);
+    
+    // Update the user with the correct password hash
+    const updatedUser = await User.update(user.id, {
+      passwordHash: passwordHash
+    });
+
+    if (!updatedUser) {
+      return res.status(500).json({ error: 'Failed to update password' });
+    }
+
+    res.json({
+      message: 'Password hash fixed successfully',
+      user: {
+        id: updatedUser.id,
+        email: updatedUser.email,
+        hasPasswordHash: true
+      }
+    });
+  } catch (error) {
+    console.error('Fix password error:', error);
+    res.status(500).json({ error: 'Failed to fix password', details: error.message });
+  }
+});
+
 module.exports = router;
