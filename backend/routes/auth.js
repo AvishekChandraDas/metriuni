@@ -87,7 +87,7 @@ router.post('/login', validate(schemas.login), async (req, res) => {
     const { email, password } = req.validatedData;
 
     // Find user with password
-    const user = await User.findByEmail(email);
+    const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -109,7 +109,7 @@ router.post('/login', validate(schemas.login), async (req, res) => {
     }
 
     // Verify password
-    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+    const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
       return res.status(401).json({ error: 'Invalid credentials' });
     }
@@ -377,7 +377,7 @@ router.post('/debug-login', async (req, res) => {
 router.get('/check-user/:email', async (req, res) => {
   try {
     const { email } = req.params;
-    const user = await User.findByEmail(email);
+    const user = await User.findOne({ email: email.toLowerCase() }).select('+password');
     
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
@@ -388,8 +388,8 @@ router.get('/check-user/:email', async (req, res) => {
         id: user.id,
         name: user.name,
         email: user.email,
-        hasPasswordHash: !!user.password_hash,
-        passwordHashLength: user.password_hash ? user.password_hash.length : 0,
+        hasPasswordHash: !!user.password,
+        passwordHashLength: user.password ? user.password.length : 0,
         role: user.role,
         status: user.status,
         muStudentId: user.mu_student_id,
@@ -413,7 +413,7 @@ router.post('/fix-password', async (req, res) => {
     }
 
     // Find the user
-    const user = await User.findByEmail(email);
+    const user = await User.findOne({ email: email.toLowerCase() });
     if (!user) {
       return res.status(404).json({ error: 'User not found' });
     }
