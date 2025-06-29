@@ -1,7 +1,11 @@
 # Railway Nixpacks Configuration - Backend Only
+[phases.setup]
+nixPkgs = ["nodejs_20", "npm-10_x"]
+
 [phases.install]
 cmds = [
-  "cd backend && npm install"
+  "cd backend && npm ci --only=production",
+  "mkdir -p backend/uploads"
 ]
 
 [start]
@@ -9,3 +13,8 @@ cmd = "cd backend && npm start"
 
 [variables]
 NODE_ENV = "production"
+PORT = "3001"
+JWT_EXPIRES_IN = "7d"
+UPLOAD_MAX_SIZE = "10485760"
+RATE_LIMIT_WINDOW_MS = "900000"
+RATE_LIMIT_MAX_REQUESTS = "100"

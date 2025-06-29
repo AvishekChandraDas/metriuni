@@ -1,0 +1,46 @@
+# Use Node.js 20 LTS Alpine for smaller image size
+FROM node:20-alpine
+
+# Install curl for health checks
+RUN apk add --no-cache curl
+
+# Set working directory
+WORKDIR /app
+
+# Copy root package.json for engine requirements
+COPY package*.json ./
+
+# Copy backend package.json and install dependencies
+COPY backend/package*.json ./backend/
+RUN cd backend && npm ci --only=production
+
+# Copy backend source code
+COPY backend/ ./backend/
+
+# Create uploads directory
+RUN mkdir -p ./backend/uploads
+
+# Set environment variables
+ENV NODE_ENV=production
+ENV PORT=3001
+ENV JWT_EXPIRES_IN=7d
+ENV UPLOAD_MAX_SIZE=10485760
+ENV RATE_LIMIT_WINDOW_MS=900000
+ENV RATE_LIMIT_MAX_REQUESTS=100
+
+# Create non-root user for security
+RUN addgroup -g 1001 -S nodejs && \
+    adduser -S nodejs -u 1001 && \
+    chown -R nodejs:nodejs /app
+
+USER nodejs
+
+# Expose port
+EXPOSE 3001
+
+# Health check
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+  CMD curl -f http://localhost:3001/api/health || exit 1
+
+# Start the backend server
+CMD ["node", "backend/server.js"]
