@@ -135,6 +135,5 @@ auth.json
 *.sqlite
 *.sqlite3
 
-# Package locks
-package-lock.json
+# Package locks (keep package-lock.json for production builds)
 yarn.lock
