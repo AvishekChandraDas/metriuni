@@ -1,16 +1,19 @@
 # Prevent Docker files from being deployed
+
 Dockerfile*
 docker-compose*
 .dockerignore
 
 # Development files
-*.md
+
+\*.md
 docs/
 test/
 tests/
 .git/
 
 # Local environment files
+
 .env.local
 .env.development
 .env.test
