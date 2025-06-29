@@ -423,7 +423,7 @@ router.post('/fix-password', async (req, res) => {
     
     // Update the user with the correct password hash
     const updatedUser = await User.update(user.id, {
-      passwordHash: passwordHash
+      password: passwordHash
     });
 
     if (!updatedUser) {
@@ -441,6 +441,50 @@ router.post('/fix-password', async (req, res) => {
   } catch (error) {
     console.error('Fix password error:', error);
     res.status(500).json({ error: 'Failed to fix password', details: error.message });
+  }
+});
+
+// Direct database password fix (bypasses User model)
+router.post('/fix-password-direct', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
+    // Hash the password
+    const passwordHash = await bcrypt.hash(password, 12);
+    
+    // Direct database update bypassing User model
+    const db = require('mongoose').connection.db;
+    const result = await db.collection('users').updateOne(
+      { email: email },
+      { 
+        $set: { 
+          password_hash: passwordHash,
+          updated_at: new Date()
+        }
+      }
+    );
+
+    if (result.matchedCount === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    if (result.modifiedCount === 0) {
+      return res.status(500).json({ error: 'Failed to update password' });
+    }
+
+    res.json({
+      message: 'Password hash fixed directly in database',
+      updated: true,
+      matchedCount: result.matchedCount,
+      modifiedCount: result.modifiedCount
+    });
+  } catch (error) {
+    console.error('Direct password fix error:', error);
+    res.status(500).json({ error: 'Failed to fix password directly', details: error.message });
   }
 });
 
