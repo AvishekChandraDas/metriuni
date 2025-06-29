@@ -4,7 +4,7 @@
   "description": "MetroUni Social Learning Platform",
   "main": "backend/server.js",
   "scripts": {
-    "start": "cd backend && npm start",
+    "start": "node backend/server.js",
     "dev": "cd backend && npm run dev",
     "install-backend": "cd backend && npm install",
     "install-frontend": "cd frontend && npm install",
