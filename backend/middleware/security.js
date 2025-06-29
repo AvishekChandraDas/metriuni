@@ -42,15 +42,40 @@ const uploadLimiter = rateLimit({
 const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = process.env.ALLOWED_ORIGINS 
-      ? process.env.ALLOWED_ORIGINS.split(',')
-      : ['http://localhost:5173', 'http://localhost:3000'];
+      ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+      : [
+          'http://localhost:5173', 
+          'http://localhost:3000',
+          'https://wondrous-souffle-ff83f7.netlify.app'
+        ];
     
     // Allow requests with no origin (mobile apps, postman, etc.)
     if (!origin) return callback(null, true);
     
-    if (allowedOrigins.indexOf(origin) !== -1) {
+    // For development/debugging - log the origin
+    console.log('CORS Origin request from:', origin);
+    console.log('Allowed origins:', allowedOrigins);
+    
+    // Check if origin matches any allowed origin (including wildcards)
+    const isAllowed = allowedOrigins.some(allowedOrigin => {
+      if (allowedOrigin.includes('*')) {
+        // Convert wildcard pattern to regex
+        const pattern = allowedOrigin
+          .replace(/\./g, '\\.')
+          .replace(/\*/g, '.*');
+        const regex = new RegExp(`^${pattern}$`);
+        return regex.test(origin);
+      } else {
+        // Exact match
+        return allowedOrigin === origin;
+      }
+    });
+    
+    if (isAllowed) {
+      console.log('CORS allowed origin:', origin);
       callback(null, true);
     } else {
+      console.log('CORS blocked origin:', origin);
       callback(new Error('Not allowed by CORS'));
     }
   },
