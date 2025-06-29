@@ -217,4 +217,44 @@ router.post('/init-admin', async (req, res) => {
   }
 });
 
+// Emergency admin creation (bypasses validation)
+router.post('/emergency-admin', async (req, res) => {
+  try {
+    // Check if any admin exists
+    const existingAdmin = await User.findByEmail('admin@metro.edu');
+    if (existingAdmin) {
+      return res.status(400).json({ error: 'Admin user already exists' });
+    }
+
+    // Hash password
+    const adminPasswordHash = await bcrypt.hash('admin123', 12);
+    
+    // Direct database insert bypassing model validation
+    const db = User.db;
+    const result = await db.collection('users').insertOne({
+      name: 'Admin User',
+      email: 'admin@metro.edu',
+      password_hash: adminPasswordHash,
+      mu_student_id: '000-000-001',
+      department: 'Administration',
+      batch: '2020',
+      role: 'admin',
+      status: 'approved',
+      created_at: new Date(),
+      updated_at: new Date()
+    });
+
+    res.status(201).json({
+      message: 'Emergency admin user created successfully',
+      adminId: result.insertedId
+    });
+  } catch (error) {
+    console.error('Emergency admin creation error:', error);
+    res.status(500).json({ 
+      error: 'Failed to create emergency admin user',
+      details: error.message 
+    });
+  }
+});
+
 module.exports = router;
