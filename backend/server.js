@@ -26,6 +26,11 @@ const healthRoutes = require('./routes/health');
 const app = express();
 const server = http.createServer(app);
 
+// Trust proxy for Railway deployment
+if (process.env.NODE_ENV === 'production') {
+  app.set('trust proxy', 1);
+}
+
 // Socket.IO with proper CORS
 const io = new socketIo.Server(server, {
   cors: {
