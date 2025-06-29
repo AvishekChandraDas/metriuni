@@ -180,4 +180,41 @@ router.get('/verify', async (req, res) => {
   }
 });
 
+// Initialize admin user (for production setup)
+router.post('/init-admin', async (req, res) => {
+  try {
+    // Check if admin already exists
+    const existingAdmin = await User.findByEmail('admin@metro.edu');
+    if (existingAdmin) {
+      return res.status(400).json({ error: 'Admin user already exists' });
+    }
+
+    // Create admin user
+    const adminPasswordHash = await bcrypt.hash('admin123', 12);
+    const admin = await User.create({
+      name: 'Admin User',
+      email: 'admin@metro.edu',
+      passwordHash: adminPasswordHash,
+      muStudentId: 'MU000001',
+      department: 'Administration',
+      batch: '2020',
+      role: 'admin',
+      status: 'approved' // Admin is pre-approved
+    });
+
+    res.status(201).json({
+      message: 'Admin user created successfully',
+      admin: {
+        id: admin.id,
+        name: admin.name,
+        email: admin.email,
+        role: admin.role
+      }
+    });
+  } catch (error) {
+    console.error('Init admin error:', error);
+    res.status(500).json({ error: 'Failed to create admin user' });
+  }
+});
+
 module.exports = router;
