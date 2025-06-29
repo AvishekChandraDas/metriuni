@@ -298,4 +298,79 @@ router.post('/promote-admin', async (req, res) => {
   }
 });
 
+// Debug login endpoint (bypass validation)
+router.post('/debug-login', async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    
+    console.log('Debug login attempt for:', email);
+    
+    // Find user with password
+    const user = await User.findByEmail(email);
+    console.log('User found:', user ? 'YES' : 'NO');
+    
+    if (!user) {
+      return res.status(401).json({ error: 'Invalid credentials - user not found' });
+    }
+
+    console.log('User status:', user.status);
+    console.log('User role:', user.role);
+
+    // Check if user is approved
+    if (user.status === 'pending') {
+      return res.status(403).json({ 
+        error: 'Your account is pending admin approval. Please wait for approval.',
+        status: 'pending'
+      });
+    }
+
+    if (user.status === 'rejected') {
+      return res.status(403).json({ 
+        error: 'Your account has been rejected. Please contact support.',
+        status: 'rejected',
+        rejectionReason: user.rejection_reason
+      });
+    }
+
+    // Verify password
+    console.log('Checking password...');
+    const isPasswordValid = await bcrypt.compare(password, user.password_hash);
+    console.log('Password valid:', isPasswordValid);
+    
+    if (!isPasswordValid) {
+      return res.status(401).json({ error: 'Invalid credentials - wrong password' });
+    }
+
+    // Generate JWT
+    const token = jwt.sign(
+      { userId: user.id, email: user.email },
+      process.env.JWT_SECRET || 'fallback-secret',
+      { expiresIn: '7d' }
+    );
+
+    res.json({
+      message: 'Debug login successful',
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        muStudentId: user.mu_student_id,
+        department: user.department,
+        batch: user.batch,
+        role: user.role,
+        avatarUrl: user.avatar_url,
+        status: user.status
+      },
+      token
+    });
+  } catch (error) {
+    console.error('Debug login error:', error);
+    res.status(500).json({ 
+      error: 'Debug login failed',
+      details: error.message,
+      stack: error.stack
+    });
+  }
+});
+
 module.exports = router;
