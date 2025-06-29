@@ -23,33 +23,8 @@ COPY backend/ ./backend/
 RUN mkdir -p ./backend/uploads
 
 # Create a simple API status page for the root route
-RUN mkdir -p ./backend/public && echo '<!DOCTYPE html>
-<html>
-<head>
-    <title>MetroUni API Server</title>
-    <style>
-        body { font-family: Arial, sans-serif; margin: 40px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; text-align: center; }
-        .container { max-width: 800px; margin: 0 auto; }
-        .status { background: #4CAF50; padding: 15px; border-radius: 8px; margin: 20px 0; }
-        .link { color: #fff; text-decoration: none; background: rgba(255,255,255,0.2); padding: 10px 20px; border-radius: 5px; margin: 10px; display: inline-block; }
-        h1 { font-size: 2.5em; margin-bottom: 20px; }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>🎓 MetroUni API Server</h1>
-        <div class="status">✅ Backend API Running Successfully</div>
-        <p>Your MetroUni social learning platform backend is live!</p>
-        <div>
-            <a href="/api/health" class="link">🔍 Health Check</a>
-            <a href="https://wondrous-souffle-ff83f7.netlify.app" class="link">🌐 Frontend App</a>
-        </div>
-        <p style="margin-top: 40px; opacity: 0.8;">
-            Frontend: <strong>https://wondrous-souffle-ff83f7.netlify.app</strong>
-        </p>
-    </div>
-</body>
-</html>' > ./backend/public/index.html
+RUN mkdir -p ./backend/public && \
+    echo '<!DOCTYPE html><html><head><title>MetroUni API Server</title><style>body{font-family:Arial,sans-serif;margin:40px;background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);color:white;text-align:center}.container{max-width:800px;margin:0 auto}.status{background:#4CAF50;padding:15px;border-radius:8px;margin:20px 0}.link{color:#fff;text-decoration:none;background:rgba(255,255,255,0.2);padding:10px 20px;border-radius:5px;margin:10px;display:inline-block}h1{font-size:2.5em;margin-bottom:20px}</style></head><body><div class="container"><h1>🎓 MetroUni API Server</h1><div class="status">✅ Backend API Running Successfully</div><p>Your MetroUni social learning platform backend is live!</p><div><a href="/api/health" class="link">🔍 Health Check</a><a href="https://wondrous-souffle-ff83f7.netlify.app" class="link">🌐 Frontend App</a></div><p style="margin-top:40px;opacity:0.8">Frontend: <strong>https://wondrous-souffle-ff83f7.netlify.app</strong></p></div></body></html>' > ./backend/public/index.html
 
 # Set environment variables
 ENV NODE_ENV=production
