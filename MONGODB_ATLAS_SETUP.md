@@ -1,6 +1,7 @@
 # MongoDB Atlas Setup Guide for MetroUni
 
 ## Prerequisites
+
 - MongoDB Atlas account (free tier available)
 - Production server with internet access
 - Domain configured (metrouni.avishekchandradas.me)
@@ -8,10 +9,12 @@
 ## Step 1: Create MongoDB Atlas Cluster
 
 1. **Sign up/Login to MongoDB Atlas**
+
    - Go to https://cloud.mongodb.com
    - Create account or sign in
 
 2. **Create a New Cluster**
+
    - Click "Create a New Cluster"
    - Choose "Shared" (Free tier) or "Dedicated" (Paid)
    - Select your preferred cloud provider and region
@@ -25,6 +28,7 @@
 ## Step 2: Database Security
 
 1. **Create Database User**
+
    - Go to "Database Access" in the left menu
    - Click "Add New Database User"
    - Username: `metrouni_admin`
@@ -41,6 +45,7 @@
 ## Step 3: Get Connection String
 
 1. **Get Connection String**
+
    - Go to "Clusters" in the left menu
    - Click "Connect" on your cluster
    - Choose "Connect your application"
@@ -48,6 +53,7 @@
    - Copy the connection string
 
 2. **Connection String Format**
+
    ```
    mongodb+srv://<username>:<password>@<cluster>.mongodb.net/<database>?retryWrites=true&w=majority
    ```
@@ -60,6 +66,7 @@
 ## Step 4: Update Production Environment
 
 1. **Edit backend/.env.production**
+
    ```bash
    # Replace the MONGODB_URI with your actual connection string
    MONGODB_URI=mongodb+srv://metrouni_admin:YourActualPassword@metrouni-cluster.mongodb.net/metriuni?retryWrites=true&w=majority
@@ -94,6 +101,7 @@
 ## Step 6: Production Deployment
 
 1. **Run the deployment script**
+
    ```bash
    chmod +x deploy-mongo-production.sh
    ./deploy-mongo-production.sh
@@ -107,6 +115,7 @@
 ## Step 7: Database Monitoring
 
 1. **Atlas Monitoring**
+
    - Go to "Metrics" in your cluster
    - Monitor connection count, operations, and performance
    - Set up alerts for critical metrics
@@ -118,11 +127,13 @@
 ## Security Best Practices
 
 1. **Network Security**
+
    - Use specific IP addresses instead of 0.0.0.0/0
    - Enable VPC Peering for enhanced security
    - Use private endpoints when possible
 
 2. **Database Security**
+
    - Rotate database passwords regularly
    - Use strong, unique passwords
    - Enable database auditing
@@ -136,6 +147,7 @@
 ## Backup and Recovery
 
 1. **Automatic Backups**
+
    - Atlas provides continuous backups
    - Configure backup retention policies
    - Test restore procedures regularly
@@ -148,6 +160,7 @@
 ## Cost Optimization
 
 1. **Free Tier Limits**
+
    - 512 MB storage
    - Shared RAM and CPU
    - No backup retention
@@ -162,11 +175,13 @@
 ### Common Issues
 
 1. **Connection Timeout**
+
    - Check network access settings
    - Verify IP address whitelist
    - Check firewall rules
 
 2. **Authentication Failed**
+
    - Verify username and password
    - Check database user permissions
    - Ensure connection string format is correct
@@ -179,9 +194,11 @@
 ### Support Resources
 
 1. **MongoDB Atlas Documentation**
+
    - https://docs.atlas.mongodb.com/
 
 2. **Community Support**
+
    - MongoDB Community Forums
    - Stack Overflow
    - Discord/Slack communities

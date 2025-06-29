@@ -1,6 +1,7 @@
 📋 **MongoDB Atlas Quick Setup Reference**
 
 ## 🎯 Current Status
+
 - ✅ MetroUni backend fully ready for MongoDB Atlas
 - ✅ Production configuration template prepared
 - ✅ Connection updater script ready
@@ -11,6 +12,7 @@
 ## 🚀 **Atlas Setup Process**
 
 ### **Step 1: Atlas Account & Cluster** (3-5 minutes)
+
 🌐 **URL**: https://cloud.mongodb.com (already opened for you)
 
 1. **Sign up/Sign in** to MongoDB Atlas
@@ -22,6 +24,7 @@
    - Click **"Create Cluster"**
 
 ### **Step 2: Database User** (1 minute)
+
 📍 **Location**: Database Access → Add New Database User
 
 - **Username**: `metrouni_admin`
@@ -29,6 +32,7 @@
 - **Privileges**: "Read and write to any database"
 
 ### **Step 3: Network Access** (1 minute)
+
 📍 **Location**: Network Access → Add IP Address
 
 - **For testing**: "Allow Access from Anywhere" (0.0.0.0/0)
@@ -36,6 +40,7 @@
 - **Comment**: "MetroUni Production Server"
 
 ### **Step 4: Get Connection String** (1 minute)
+
 📍 **Location**: Clusters → Connect → Connect your application
 
 - **Driver**: Node.js
@@ -47,6 +52,7 @@
 ## 🔧 **After Atlas Setup**
 
 ### **Update Your Configuration**
+
 Once you have the connection string from Atlas:
 
 ```bash
@@ -55,6 +61,7 @@ Once you have the connection string from Atlas:
 ```
 
 This script will:
+
 - ✅ Update your production environment
 - ✅ Test the Atlas connection
 - ✅ Seed the production database
@@ -62,6 +69,7 @@ This script will:
 - ✅ Prepare for deployment
 
 ### **Then Deploy**
+
 ```bash
 # Full production deployment
 ./deploy-mongo-production.sh
@@ -79,6 +87,7 @@ This script will:
 ---
 
 ## 🔐 **Remember Your Admin Credentials**
+
 - **Email**: admin@avishekchandradas.me
 - **Password**: SecureAdmin2024!
 - **URL**: https://metrouni.avishekchandradas.me/admin (after deployment)
@@ -98,7 +107,7 @@ This script will:
 
 1. **Complete Atlas setup** using the browser window I opened
 2. **Get your connection string** from Atlas
-3. **Run**: `./update-atlas-connection.sh` 
+3. **Run**: `./update-atlas-connection.sh`
 4. **Deploy**: `./deploy-mongo-production.sh`
 
 **Your MetroUni platform will be live! 🚀**

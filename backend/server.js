@@ -3,6 +3,7 @@ const http = require('http');
 const socketIo = require('socket.io');
 const compression = require('compression');
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 const path = require('path');
 require('dotenv').config();
 
@@ -86,13 +87,16 @@ app.get('/health', (req, res) => {
 });
 
 app.get('/api/health', (req, res) => {
-  res.json({ 
+  const healthStatus = {
     status: 'OK', 
     service: 'MetroUni API',
     timestamp: new Date().toISOString(),
     version: '1.0.0',
-    environment: process.env.NODE_ENV || 'development'
-  });
+    environment: process.env.NODE_ENV || 'development',
+    database: mongoose.connection.readyState === 1 ? 'connected' : 'disconnected'
+  };
+  
+  res.json(healthStatus);
 });
 
 // Socket.IO connection handling
@@ -154,15 +158,21 @@ const PORT = process.env.PORT || 3001;
 // Connect to MongoDB and start server
 const startServer = async () => {
   try {
-    // Connect to MongoDB
-    await connectDB();
+    // Try to connect to MongoDB, but don't fail if it's not available
+    try {
+      await connectDB();
+    } catch (dbError) {
+      console.error('⚠️ Database connection failed, but starting server anyway:', dbError.message);
+      console.log('📝 Make sure to set MONGODB_URI environment variable');
+    }
     
-    // Start the server
-    server.listen(PORT, () => {
+    // Start the server regardless of database status
+    server.listen(PORT, '0.0.0.0', () => {
       console.log(`🚀 MetroUni server running on port ${PORT}`);
       console.log(`🌍 Environment: ${process.env.NODE_ENV || 'development'}`);
-      console.log(`🍃 Database: MongoDB`);
+      console.log(`🍃 Database: ${mongoose.connection.readyState === 1 ? 'Connected' : 'Not Connected'}`);
       console.log(`📡 API: http://localhost:${PORT}/api`);
+      console.log(`❤️ Health: http://localhost:${PORT}/api/health`);
     });
   } catch (error) {
     console.error('❌ Failed to start server:', error);

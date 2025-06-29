@@ -1,21 +1,24 @@
-🗄️  **MetroUni MongoDB Atlas Setup - Step by Step**
+🗄️ **MetroUni MongoDB Atlas Setup - Step by Step**
 
 Your MetroUni backend is fully ready for production! The MongoDB Atlas connection failed because you haven't created the Atlas cluster yet. This is the next step.
 
 ## 🎯 **Current Status**
+
 ✅ Backend fully migrated to MongoDB  
 ✅ All models converted to Mongoose  
 ✅ Production environment configured  
 ✅ Deployment scripts ready  
-✅ Admin credentials: admin@avishekchandradas.me / SecureAdmin2024!  
+✅ Admin credentials: admin@avishekchandradas.me / SecureAdmin2024!
 
 ## 📋 **Next Steps - MongoDB Atlas Setup**
 
 ### **Step 1: Create MongoDB Atlas Account**
+
 1. Go to https://cloud.mongodb.com
 2. Sign up (free) or sign in to existing account
 
 ### **Step 2: Create New Cluster**
+
 1. Click "Create a New Cluster" or "Build a Cluster"
 2. Choose **"Shared"** (Free tier - perfect for getting started)
 3. **Cloud Provider**: Choose AWS, Google Cloud, or Azure
@@ -24,6 +27,7 @@ Your MetroUni backend is fully ready for production! The MongoDB Atlas connectio
 6. Click "Create Cluster" (takes 2-3 minutes)
 
 ### **Step 3: Create Database User**
+
 1. In the left sidebar, click "Database Access"
 2. Click "Add New Database User"
 3. **Username**: `metrouni_admin`
@@ -32,6 +36,7 @@ Your MetroUni backend is fully ready for production! The MongoDB Atlas connectio
 6. Click "Add User"
 
 ### **Step 4: Configure Network Access**
+
 1. In the left sidebar, click "Network Access"
 2. Click "Add IP Address"
 3. For testing: Click "Allow Access from Anywhere" (adds 0.0.0.0/0)
@@ -40,6 +45,7 @@ Your MetroUni backend is fully ready for production! The MongoDB Atlas connectio
 6. Click "Confirm"
 
 ### **Step 5: Get Connection String**
+
 1. Go back to "Clusters" in the left sidebar
 2. Click "Connect" button on your cluster
 3. Choose "Connect your application"
@@ -51,6 +57,7 @@ Your MetroUni backend is fully ready for production! The MongoDB Atlas connectio
    ```
 
 ### **Step 6: Update Production Configuration**
+
 1. Take the connection string from Step 5
 2. Replace `<password>` with your actual password from Step 3
 3. Add `/metriuni` before the `?` to specify the database name
@@ -60,6 +67,7 @@ Your MetroUni backend is fully ready for production! The MongoDB Atlas connectio
    ```
 
 ### **Step 7: Update Environment File**
+
 Replace the MONGODB_URI in your `backend/.env.production` file:
 
 ```bash
@@ -77,6 +85,7 @@ cd /Users/avishekchandradas/Desktop/MetroUni
 ```
 
 The script will test the connection and if successful, will:
+
 - ✅ Verify Atlas connection
 - ✅ Seed the production database with admin user
 - ✅ Build Docker image for deployment
@@ -87,18 +96,23 @@ The script will test the connection and if successful, will:
 Once Atlas is configured and tested, you'll have these options:
 
 ### **Option A: Local Testing**
+
 Test the full production setup locally:
+
 ```bash
 docker run -p 3000:3000 --env-file backend/.env.production metrouni:latest
 ```
 
 ### **Option B: Full Production Deployment**
+
 Deploy to your production server:
+
 ```bash
 ./deploy-mongo-production.sh
 ```
 
 ### **Option C: Manual Cloud Deployment**
+
 Deploy manually to services like DigitalOcean, AWS, etc.
 
 ## 💡 **Tips for Atlas Setup**
@@ -112,15 +126,18 @@ Deploy manually to services like DigitalOcean, AWS, etc.
 ## 🆘 **Common Issues**
 
 **"querySrv ENOTFOUND" error**
+
 - Make sure cluster is fully created (wait 2-3 minutes)
 - Check connection string format
 - Verify cluster name matches
 
 **"Authentication failed" error**
+
 - Double-check username and password
 - Ensure database user has correct permissions
 
 **"Network timeout" error**
+
 - Check network access settings
 - Verify IP address is whitelisted
 
