@@ -10,6 +10,12 @@ WORKDIR /app
 # Copy root package.json for engine requirements
 COPY package*.json ./
 
+# Copy and build frontend first
+COPY frontend/package*.json ./frontend/
+RUN cd frontend && npm ci
+COPY frontend/ ./frontend/
+RUN cd frontend && npm run build
+
 # Copy backend package.json and install dependencies
 COPY backend/package*.json ./backend/
 WORKDIR /app/backend
@@ -21,6 +27,9 @@ COPY backend/ ./backend/
 
 # Create uploads directory
 RUN mkdir -p ./backend/uploads
+
+# Move frontend build to backend public directory
+RUN mkdir -p ./backend/public && cp -r ./frontend/dist/* ./backend/public/
 
 # Set environment variables
 ENV NODE_ENV=production
