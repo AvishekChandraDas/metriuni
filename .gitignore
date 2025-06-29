@@ -137,3 +137,6 @@ auth.json
 
 # Package locks (keep package-lock.json for production builds)
 yarn.lock
+
+# Local Netlify folder
+.netlify

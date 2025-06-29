@@ -50,7 +50,8 @@ const LoginPage: React.FC = () => {
     setIsLoading(true);
     try {
       await login(formData.email, formData.password);
-      navigate('/feed');
+      // Force navigation after successful login
+      setTimeout(() => navigate('/feed'), 100);
     } catch {
       // Error is handled in the auth context
     } finally {
