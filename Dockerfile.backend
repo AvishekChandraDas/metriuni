@@ -12,9 +12,13 @@ COPY package*.json ./
 
 # Copy and build frontend first
 COPY frontend/package*.json ./frontend/
-RUN cd frontend && npm ci
+WORKDIR /app/frontend
+RUN npm install
+WORKDIR /app
 COPY frontend/ ./frontend/
-RUN cd frontend && npm run build
+WORKDIR /app/frontend
+RUN npm run build
+WORKDIR /app
 
 # Copy backend package.json and install dependencies
 COPY backend/package*.json ./backend/
