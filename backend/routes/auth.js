@@ -257,4 +257,45 @@ router.post('/emergency-admin', async (req, res) => {
   }
 });
 
+// Promote user to admin and approve (emergency use)
+router.post('/promote-admin', async (req, res) => {
+  try {
+    const { email } = req.body;
+    
+    if (!email) {
+      return res.status(400).json({ error: 'Email is required' });
+    }
+
+    // Find the user
+    const user = await User.findByEmail(email);
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    // Update user to admin status
+    const updatedUser = await User.update(user.id, {
+      role: 'admin',
+      status: 'approved'
+    });
+
+    if (!updatedUser) {
+      return res.status(500).json({ error: 'Failed to update user' });
+    }
+
+    res.json({
+      message: 'User promoted to admin successfully',
+      user: {
+        id: updatedUser.id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        role: updatedUser.role,
+        status: updatedUser.status
+      }
+    });
+  } catch (error) {
+    console.error('Promote admin error:', error);
+    res.status(500).json({ error: 'Failed to promote user to admin' });
+  }
+});
+
 module.exports = router;
