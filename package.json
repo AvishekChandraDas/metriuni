@@ -4,13 +4,7 @@
   "description": "MetroUni Social Learning Platform",
   "main": "backend/server.js",
   "scripts": {
-    "start": "node backend/server.js",
-    "dev": "cd backend && npm run dev",
-    "install-backend": "cd backend && npm install",
-    "install-frontend": "cd frontend && npm install",
-    "build-frontend": "cd frontend && npm run build",
-    "build": "echo 'Build completed - backend ready'",
-    "postinstall": "echo 'Dependencies installed'"
+    "start": "node backend/server.js"
   },
   "engines": {
     "node": ">=20.0.0",
@@ -23,7 +17,5 @@
     "platform"
   ],
   "author": "Avishek Chandra Das",
-  "license": "MIT",
-  "dependencies": {},
-  "devDependencies": {}
+  "license": "MIT"
 }

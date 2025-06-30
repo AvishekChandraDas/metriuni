@@ -74,9 +74,11 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
   const login = async (email: string, password: string) => {
     try {
+      console.log('AuthContext: Starting login process...');
       const response = await authAPI.login({ email, password });
       const { user: userData, token }: AuthResponse = response.data;
 
+      console.log('AuthContext: Login API successful, setting user data...', userData);
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(userData));
       setUser(userData);
@@ -84,8 +86,10 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       // Connect to socket
       socketService.connect(userData.id);
 
+      console.log('AuthContext: Login complete, isAuthenticated should now be true');
       toast.success('Welcome back!');
     } catch (error: unknown) {
+      console.error('AuthContext: Login failed', error);
       const message = error instanceof Error && 'response' in error && 
         typeof error.response === 'object' && error.response !== null &&
         'data' in error.response && typeof error.response.data === 'object' &&

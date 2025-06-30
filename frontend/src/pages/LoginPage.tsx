@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { validateEmail } from '../utils/helpers';
 import LoadingSpinner from '../components/LoadingSpinner';
 
 const LoginPage: React.FC = () => {
   const { login } = useAuth();
-  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -49,10 +48,13 @@ const LoginPage: React.FC = () => {
 
     setIsLoading(true);
     try {
+      console.log('LoginPage: Attempting login...');
       await login(formData.email, formData.password);
-      // Force navigation after successful login
-      setTimeout(() => navigate('/feed'), 100);
+      console.log('LoginPage: Login successful! Waiting for redirect...');
+      // Let the App component handle navigation via isAuthenticated state
+      // No manual navigation needed - the routing will redirect automatically
     } catch {
+      console.error('LoginPage: Login failed');
       // Error is handled in the auth context
     } finally {
       setIsLoading(false);

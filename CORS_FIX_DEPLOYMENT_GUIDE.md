@@ -12,7 +12,6 @@
    ```bash
    railway login
    ```
-   
 2. **Deploy directly**:
    ```bash
    cd /Users/avishekchandradas/Desktop/MetroUni
@@ -22,6 +21,7 @@
 ### Option 2: Git Push to Railway (Alternative)
 
 1. **Check your git status**:
+
    ```bash
    git status
    git add .
@@ -67,21 +67,23 @@ curl https://your-railway-backend.railway.app/api/health
 ### 3. Test CORS Fix
 
 Open the CORS test file:
+
 ```bash
 open /Users/avishekchandradas/Desktop/MetroUni/test-cors.html
 ```
 
 Or test via browser console on your Netlify frontend:
+
 ```javascript
-fetch('https://your-railway-backend.railway.app/api/health', {
-  method: 'GET',
+fetch("https://your-railway-backend.railway.app/api/health", {
+  method: "GET",
   headers: {
-    'Content-Type': 'application/json'
-  }
+    "Content-Type": "application/json",
+  },
 })
-.then(response => response.json())
-.then(data => console.log('✅ CORS working:', data))
-.catch(error => console.error('❌ CORS failed:', error));
+  .then((response) => response.json())
+  .then((data) => console.log("✅ CORS working:", data))
+  .catch((error) => console.error("❌ CORS failed:", error));
 ```
 
 ## Expected Results
@@ -109,4 +111,5 @@ origin: true, // Allow all origins - REMOVE IN PRODUCTION
 ```
 
 But this should NOT be needed with the current fix.
+
 # Trigger Railway deployment - Mon Jun 30 01:53:21 +06 2025

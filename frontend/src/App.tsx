@@ -22,6 +22,8 @@ import LoadingSpinner from './components/LoadingSpinner';
 const AppRoutes: React.FC = () => {
   const { isLoading, isAuthenticated } = useAuth();
 
+  console.log('AppRoutes: isLoading=', isLoading, 'isAuthenticated=', isAuthenticated);
+
   if (isLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center">
@@ -37,7 +39,17 @@ const AppRoutes: React.FC = () => {
         <Route 
           path="/login" 
           element={
-            isAuthenticated ? <Navigate to="/feed" replace /> : <LoginPage />
+            isAuthenticated ? (
+              (() => {
+                console.log('AppRoutes: Redirecting to feed because isAuthenticated=true');
+                return <Navigate to="/feed" replace />;
+              })()
+            ) : (
+              (() => {
+                console.log('AppRoutes: Showing login page because isAuthenticated=false');
+                return <LoginPage />;
+              })()
+            )
           } 
         />
         <Route 

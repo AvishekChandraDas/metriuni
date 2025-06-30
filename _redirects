@@ -1,0 +1,9 @@
+# Netlify redirects for React Router (SPA)
+# This tells Netlify to serve index.html for all routes
+# so that React Router can handle client-side routing
+
+/*    /index.html   200
+
+# API calls should be proxied to the backend
+# (Optional - if you want to use Netlify as a proxy)
+# /api/*  https://web-production-7bab5.up.railway.app/api/:splat  200

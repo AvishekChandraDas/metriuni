@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>MetroUni Frontend Test</title>
+  </head>
+  <body>
+    <h1>MetroUni Frontend Test</h1>
+    <div id="results"></div>
+
+    <script>
+      const API_URL = "https://web-production-7bab5.up.railway.app";
+      const results = document.getElementById("results");
+
+      function log(message) {
+        results.innerHTML += `<p>${message}</p>`;
+        console.log(message);
+      }
+
+      async function testAPI() {
+        try {
+          log("Testing API health...");
+          const healthResponse = await fetch(`${API_URL}/health`);
+          const healthData = await healthResponse.json();
+          log(`✅ API Health: ${healthData.status}`);
+
+          log("Testing login...");
+          const loginResponse = await fetch(`${API_URL}/api/auth/login`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              email: "admin@avishekchandradas.me",
+              password: "Admin123!",
+            }),
+          });
+
+          if (loginResponse.ok) {
+            const loginData = await loginResponse.json();
+            log(`✅ Login successful: ${loginData.message}`);
+            log(`User: ${loginData.user.name} (${loginData.user.role})`);
+          } else {
+            const errorData = await loginResponse.json();
+            log(`❌ Login failed: ${errorData.error}`);
+          }
+        } catch (error) {
+          log(`❌ Error: ${error.message}`);
+        }
+      }
+
+      // Test on page load
+      testAPI();
+    </script>
+  </body>
+</html>

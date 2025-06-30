@@ -1,6 +1,7 @@
 # 🚨 URGENT: Create Admin User for Production
 
 ## 🎯 **The Problem:**
+
 The admin user doesn't exist in the production database, causing login to fail.
 
 ## ✅ **Quick Solution:**
@@ -40,7 +41,7 @@ Let me create an emergency endpoint that bypasses validation...
 If you have access to your MongoDB Atlas dashboard:
 
 1. **Go to**: MongoDB Atlas → Clusters → Browse Collections
-2. **Find**: `metriuni` database → `users` collection  
+2. **Find**: `metriuni` database → `users` collection
 3. **Find the user** with email `admin@metro.edu`
 4. **Edit the document** and change:
    ```json
