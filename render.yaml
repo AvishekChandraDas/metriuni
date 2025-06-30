@@ -3,9 +3,11 @@ services:
     name: metriuni-backend
     env: node
     plan: free
-    buildCommand: cd backend && npm ci
+    runtime: node
+    buildCommand: cd backend && npm ci --only=production
     startCommand: cd backend && npm start
     healthCheckPath: /api/health
+    rootDir: backend
     envVars:
       - key: NODE_ENV
         value: production
